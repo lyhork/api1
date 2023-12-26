@@ -1,0 +1,12 @@
+deploy:camcyber:development:
+  stage: deploy:camcyber:development
+  variables:
+    URL: ""
+  environment:
+    name: 'CamCyber/Development'
+  script:
+    - bash -e scripts/pipelines/gitlab.sh
+  after_script:
+    - bash -e scripts/notify/telegram.sh $CI_JOB_STATUS
+  only:
+    - dev

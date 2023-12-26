@@ -1,0 +1,67 @@
+- name: Build image
+  docker_image:
+    build:
+      path: ./../../api
+      dockerfile: Dockerfile
+    name: survey-api
+    tag: latest
+    push: false
+    force_source: yes
+    source: build
+  no_log: false
+
+- name: Create a network
+  docker_network:
+    name: survey-network
+  no_log: false
+
+- name: run mysql
+  docker_container:
+    hostname: "{{ item[0].db_host }}"
+    name: survey-db
+    image: mysql:5.7.22
+    restart_policy: unless-stopped
+    volumes:
+      - ./../../db/mysql:/var/lib/mysql:rw
+    ports:
+      - "{{ item[0].db_exposed_port }}:{{ item[0].db_port }}"
+    env:
+      MYSQL_DATABASE: "{{ item[0].db_database }}"
+      MYSQL_USER: "{{ item[0].db_username }}"
+      MYSQL_PASSWORD: "{{ item[0].db_password }}"
+      MYSQL_ROOT_PASSWORD: "{{ item[0].db_password }}"
+      SERVICE_TAGS: master
+      SERVICE_NAME: mysql
+    networks:
+      - name: survey-network
+  with_list: 
+    - "{{ db_env }}"
+  no_log: false
+
+- name: run docker image
+  docker_container:
+    name: survey-api
+    image: survey-api:latest
+    restart_policy: unless-stopped
+    recreate: yes
+    ports:
+      - "3901:8000"
+    restart: true
+    volumes:
+      - ./../../api/app:/var/www/app
+      - ./../../api/resources:/var/www/resources
+      - ./../../api/routes:/var/www/routes
+      - ./../../api/database:/var/www/database
+    env:
+      DB_CONNECTION: "{{ item[0].db_connection }}"
+      DB_HOST: "{{ item[0].db_host }}"
+      DB_PORT: "{{ item[0].db_port }}"
+      DB_DATABASE: "{{ item[0].db_database }}"
+      DB_USERNAME: "{{ item[0].db_username }}"
+      DB_PASSWORD: "{{ item[0].db_password }}"
+
+    networks:
+      - name: survey-network
+  with_list: 
+    - "{{ db_env }}"
+  no_log: false

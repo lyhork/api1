@@ -1,0 +1,8 @@
+---
+# create user login bastion
+- hosts: local
+  gather_facts: no
+  any_errors_fatal: no
+  become: no
+  roles:
+    - role: deployment
