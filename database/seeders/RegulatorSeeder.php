@@ -36,7 +36,7 @@ class RegulatorSeeder extends Seeder
                     'updated_at' => now()
                 ],
                 [
-                    'name' => 'និយ័តករអាជីពកម្មអចលនវត្ថុនិងបញ្ចាំ',
+                    'name' => 'និយ័តករអាជីវកម្មអចលនវត្ថុនិងបញ្ចាំ',
                     'image' => 'static/Regulators/REBP.png',
                     'is_active' => '1',
                     'created_at' => now(),
