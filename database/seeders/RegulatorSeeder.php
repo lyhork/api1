@@ -22,7 +22,7 @@ class RegulatorSeeder extends Seeder
         DB::table('regulators')->insert(
             [
                 [
-                    'name' => 'និយ័តកគណនេយ្យនិងសវនកម្ម',
+                    'name' => 'និយ័តករគណនេយ្យនិងសវនកម្ម',
                     'image' => 'static/Regulators/ACAR.png',
                     'is_active' => '1',
                     'created_at' => now(),
