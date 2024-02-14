@@ -64,7 +64,7 @@ class RegulatorSeeder extends Seeder
                     'updated_at' => now()
                 ],
                 [
-                    'name' => 'ការរិយាល័យច្រកចេញចូលតែមួយ',
+                    'name' => 'ការិយាល័យច្រកចេញចូលតែមួយ',
                     'image' => 'static/Regulators/logo.png',
                     'is_active' => '1',
                     'created_at' => now(),
